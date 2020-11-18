@@ -36,7 +36,7 @@ setQuestions(res.data.data[props.count-1])
 
 
 {
- if (questions.q_type == "M" ) {
+ if (questions.q_type == "C" ) {
 return(<>
 <h2 className="mt-3 ml-4 text-left">{props.count}) {questions.q_name}</h2>
 	<table  className="custom-font mt-4">
@@ -93,12 +93,25 @@ return(<>
 )
 }
 else if( questions.q_type == "P" ){
+{if(questions.mediaorigin == 'F'){
+
 return(<>
 <h2 className="mt-3 ml-4 text-left">{props.count}) {questions.q_name}</h2>
-<img src={qpic} alt="Logo" className="text-left" width="300" height="150" /><br/><br/>
+<img src={require('./kittu_123456.jpg')} alt="image_display_error" className="text-left" width="300" height="150" /><br/><br/>
 	<input className="Inputfield1"/>
 </>
 )
+}else{
+
+return(<>
+<h2 className="mt-3 ml-4 text-left">{props.count}) {questions.q_name}</h2>
+<img src={questions.media_url} alt="image_display_error" className="text-left" width="300" height="150" /><br/><br/>
+	<input className="Inputfield1"/>
+</>
+)
+}}
+
+
 }else if( questions.q_type == "A" ){
 return(<>
 

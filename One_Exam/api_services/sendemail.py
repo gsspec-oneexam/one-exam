@@ -7,11 +7,11 @@ from email.mime.multipart import MIMEMultipart
 import random, string
 
 import sys, os, django
-sys.path.append('D:\projects\pocs\poc')
-os.environ['DJANGO_SETTINGS_MODULE'] = 'poc.settings'
+sys.path.append('S:\GS_spec\One_Exam')
+os.environ['DJANGO_SETTINGS_MODULE'] = 'One_Exam.settings'
 django.setup()
 
-from backend.models import Participant, Paper_Instance
+from api_services.models import Participant, Paper_Instance
 
 config = configparser.ConfigParser()
 config.read(os.environ['OneExamCONFIG'] + '/config.ini')
@@ -20,10 +20,10 @@ email_config = config['SEND_EMAIL_CONFIG']
 
 def sendEmail():
     try:
-        print("here")
+
         participants = Participant.objects.all()
         for participant in participants:
-            print(participant.paper_id,"pp id")
+
             email_to = participant.participant_email
             sender_email = email_config['sender']
             receiver_email = email_to
@@ -40,7 +40,8 @@ def sendEmail():
                 server.sendmail(sender_email, receiver_email, message.as_string())
             paper_instance,paper_instance_stat=Paper_Instance.objects.get_or_create(participant_id=participant.id)
             paper_instance.participant_key = exam_code
-            paper_instance.paper_id = participant.paper_id
+            paper_instance.paper_id = 1
+            paper_instance.calender_id = 1
             paper_instance.save()
 
     except Exception as e:

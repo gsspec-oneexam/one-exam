@@ -20,26 +20,13 @@ import Iq from "./iq.js";
 import Aq from "./aq.js";
 import F from "./final.js";
 import L from "./lis.js";
-import Code_check from "./components/exam_code.js"
+import Code_check from "./exam_code.js"
 
 
 function App() {
 
 const [code, setCode] = useState('null')
-const [exam_code,setExam_code] = useState([]);
-useEffect(() =>{
 
-axios.get('http://localhost:8000/exam_codes')
-.then(res =>{
-for (const [index, value] of (res.data.data).entries()) {
-
-
-setExam_code(value.exam_code)
-}
-
-})
-
-},[]);
 
   return (
   <Router>
@@ -48,22 +35,13 @@ setExam_code(value.exam_code)
 
 <Route exact path = "/quest" exact component={QuestionChoice} />
 
-<Route exact path = "/quest2" exact component={Question} />
 
-<Route exact path = "/qpc" exact component={Qpc} />
 
-<Route exact path = "/iq" exact component={Iq} />
-
-<Route exact path = "/aq" exact component={Aq} />
-
-<Route exact path = "/f" exact component={F} />
-
-<Route exact path = "/l" exact component={L} />
 
 <Route exact path = "/ins" exact component={Instructions} />
 <div className="code-content-div" align="center">
 <div className="title-div"><br /><br />
-	<label className="title-label">Swarabharathi Carnatic Music Exam</label>
+	<label className="title-label">OneExam</label>
 </div>
 
 
@@ -71,7 +49,7 @@ setExam_code(value.exam_code)
 <p>Please enter entrance code to proceed for online examination</p>
 
 <input onChange={event => setCode(event.target.value)}/>&nbsp;
-<Code_check exam_code={exam_code} code={code}/>
+<Code_check code={code} />
 </div>
 </div>
 </Switch>

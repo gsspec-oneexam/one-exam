@@ -9,40 +9,34 @@ import Question from "./questions"
 import samtext from "./questions"
 import axios from "axios";
 import ProgressBar from 'react-bootstrap/ProgressBar';
+
 import { Progress } from 'antd';
 import Questions from "./questions_dynamic.js"
 
 
 
-function QuestionChoice() {
-
+function QuestionChoice(props) {
 const [seconds, setSeconds] = useState(30)
   const [minutes, setMinutes] = useState(1)
   const [qno, setQno] = useState(1)
 
-const [question, setQuestion] = useState("1)  Who is the creator of Carnatic Music Learning Syllabus?")
+  const [skipped,setSkipped] = useState(0)
 
-const [opt, setOpt] = useState({opt1:"Thyagaraj",opt2:"Purandara Das",opt3:"Muthu Swami",opt4:"Bhyma Sasthri",opt5:"None of the Above"})
 
-function nextQuestion(){
-
-setQno("2")
-setQuestion("2)  Number of Alphabets?")
-setOpt({opt1:"15",opt2:"21",opt3:"36",opt4:"5",opt5:"none"})
-setSeconds(30);
-      setMinutes(1);
-
-}
 
 
   function updateTime() {
 
   {if(count - 1 != quest_length){
-    if (minutes == 0 && seconds == 0) {
+
+
+     if (minutes == 0 && seconds == 0) {
 
       setSeconds(30);
       setMinutes(1);
       inc_count();
+
+    setSkipped(prevCount => prevCount +1 )
 
     }
     else {
@@ -130,11 +124,10 @@ setSeconds(30);
       setMinutes(1);
 }
 
-const [pgbar,setPgbar] =  useState((count / quest_length)*100)
+const [pgbar,setPgbar] =  useState(0)
 useEffect(() => {
     setPgbar((count / quest_length)*100)
-  })
-  const [skipped,setSkipped] = useState(0)
+  },[count])
   const [ans,setAns] = useState(0)
   function skip_q(){
 
@@ -162,7 +155,7 @@ setSeconds(30);
 <div>
 <div className="content-div" align="center">
 <div className="title-div"><br /><br />
-	<label className="title-label">Carnatic Music Theory Exam Paper - 1</label>
+	<label className="title-label">{props.paper}</label>
 </div>
 <div className="grid-container">
     <div className="font">
@@ -180,7 +173,6 @@ setSeconds(30);
 <Questions quest={questions} total_q={quest_length} count={count}/>
 
 <div className="nav-button-div text-center">
-
 <button className="btn btn-custom" onClick={dec_count}>Back</button>{' '}
 <button className="btn btn-custom ml-5"  onClick={skip_q}>Skip</button>{' '}
 <button className="btn btn-custom ml-5" onClick={ans_q} >Next</button>{' '}
@@ -197,6 +189,7 @@ setSeconds(30);
 </Router>
   );
   }else{return (
+
 
   <Router>
 <Switch>
