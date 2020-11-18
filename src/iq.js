@@ -5,7 +5,7 @@ import './App.css';
 import ReactAudioPlayer from 'react-audio-player';
 import ado from './Reeti.mp3';
 import Qpc from "./pc.js";
-import qpic from './kittu_123456.jpg';
+import qpic from './music_image.jpg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import axios from "axios";

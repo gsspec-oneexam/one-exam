@@ -11,7 +11,7 @@ import samtext from "./questions"
 import VoiceRecorder from "./recorder.js"
 import axios from "axios";
 
-import qpic from './kittu_123456.jpg';
+import qpic from './music_image.jpg';
 import ReactAudioPlayer from 'react-audio-player';
 import QuestionChoice from "./QuestionC.js";
 import Qpc from "./pc.js";
@@ -97,7 +97,7 @@ else if( questions.q_type == "P" ){
 
 return(<>
 <h2 className="mt-3 ml-4 text-left">{props.count}) {questions.q_name}</h2>
-<img src={require('./kittu_123456.jpg')} alt="image_display_error" className="text-left" width="300" height="150" /><br/><br/>
+<img src={require('./music_image.jpg')} alt="image_display_error" className="text-left" width="300" height="150" /><br/><br/>
 	<input className="Inputfield1"/>
 </>
 )

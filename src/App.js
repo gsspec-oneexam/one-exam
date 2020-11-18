@@ -5,7 +5,7 @@ import {BrowserRouter as Router,Switch,Route,Link,useHistory,useLocation } from 
 import axios from "axios";
 import { hashHistory,browserHistory  } from "react-router";
 import logo from './logo.svg';
-import qpic from './kittu_123456.jpg';
+import qpic from './music_image.jpg';
 import ReactAudioPlayer from 'react-audio-player';
 import ado from './Reeti.mp3';
 import './App.css';
