@@ -25,7 +25,7 @@ const requestOptions = {
         method: 'POST',
         body: JSON.stringify({ participant_key: props.code })
     };
-    fetch('http://localhost:8000/sec_instructions', requestOptions)
+    fetch('http://3.138.184.54:8000/sec_instructions', requestOptions)
         .then(res =>res.json())
         .then(data => {setDta(data);setInstructions(data.Instructions);setPaper(data.paper_name)
 })

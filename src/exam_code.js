@@ -14,7 +14,7 @@ const [exam_code,setExam_code] = useState([]);
 
 useEffect(() =>{
 
-axios.get('http://localhost:8000/exam_codes')
+axios.get('http://3.138.184.54:8000/exam_codes')
 .then(res =>{
 setExam_code(res.data.data)
 //for (const [index, value] of (res.data.data).entries()) {

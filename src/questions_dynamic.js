@@ -27,7 +27,7 @@ function Questions(props) {
 
 const [questions,setQuestions] = useState([]);
 useEffect(() =>{
-axios.get('http://localhost:8000/questions')
+axios.get('http://3.138.184.54:8000/questions')
 .then(res => {
 setQuestions(res.data.data[props.count-1])
 

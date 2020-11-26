@@ -93,7 +93,7 @@ const [oseconds, setoSeconds] = useState(0)
 
 const [questions,setQuestions] = useState([]);
 useEffect(() =>{
-axios.get('http://localhost:8000/questions')
+axios.get('http://3.138.184.54:8000/questions')
 .then(res =>{
 console.log(res.data)
 setQuestions(res.data.data[4])
