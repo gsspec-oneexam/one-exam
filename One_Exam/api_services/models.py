@@ -248,6 +248,7 @@ desc: To store Media details.
 class Media(models.Model):
     id = models.AutoField(primary_key=True)
     media_type = models.CharField(max_length=1)
+    mediasource = models.CharField(max_length=1,null=True,blank=True)
     mediaorigin = models.CharField(max_length=1,null=True,blank=True)
     media_url = models.CharField(max_length=256,null=True,blank=True)
     createdby = models.IntegerField(null=True,blank=True)
@@ -320,3 +321,20 @@ class Paper_results(models.Model):
     class Meta:
         db_table = 'paper_results'
 
+class Poc_marks_memo(models.Model):
+    id = models.AutoField(primary_key=True)
+    std_name = models.CharField(max_length=100,null=True,blank=True)
+    father_name = models.CharField(max_length=100,null=True,blank=True)
+    email=models.CharField(max_length=300,null=True,blank=True)
+    place = models.CharField(max_length=100,null=True,blank=True)
+    subject = models.CharField(max_length=100,null=True,blank=True)
+    grade = models.CharField(max_length=1,null=True,blank=True)
+    paper1 = models.CharField(max_length=100,null=True,blank=True)
+    paper2 = models.CharField(max_length=100,null=True,blank=True)
+    paper1_marks_required = models.IntegerField(null=True,blank=True)
+    paper2_marks_required = models.IntegerField(null=True,blank=True)
+    paper1_marks_obtained = models.IntegerField(null=True,blank=True)
+    paper2_marks_obtained = models.IntegerField(null=True,blank=True)
+
+    class Meta:
+        db_table = 'poc_marks_memo'

@@ -1,4 +1,4 @@
-import React , { useEffect , useState} from 'react';
+import React , { useEffect , useState ,useContext} from 'react';
 import { Button } from 'react-bootstrap';
 import {BrowserRouter as Router,Switch,Route,Link,useHistory,useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -6,15 +6,16 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 import Instructions from "./instructions.js";
 
+import {domain} from "./config.js";
 
 import axios from "axios";
 function Code_check(props) {
 
 const [exam_code,setExam_code] = useState([]);
-
+const Domain = useContext(domain)
 useEffect(() =>{
 
-axios.get('http://3.138.184.54:8000/exam_codes')
+axios.get('http://'+Domain+'/exam_codes')
 .then(res =>{
 setExam_code(res.data.data)
 //for (const [index, value] of (res.data.data).entries()) {
@@ -40,8 +41,12 @@ return(
 else if (exam_code.includes(props.code) && props.code.length == 15) {
 return(<>
 <button className="btn btn-custom"
-style={{ display:'show' }} > <Link className = "cstyle"  to = "/ins"><div hidden>
-<Instructions code = {props.code} /></div>Proceed</Link></button>
+style={{ display:'show' }} >
+<Link className = "cstyle"  to = "/ins"><div hidden>
+
+<Instructions code = {props.code} />
+
+</div>Proceed</Link></button>
 </>)
 
 } else if( props.code.length > 14 ) {

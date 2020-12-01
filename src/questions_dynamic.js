@@ -1,4 +1,4 @@
-import React , { useEffect , useState} from 'react';
+import React , { useEffect , useState , useContext} from 'react';
 import { Button } from 'react-bootstrap';
 import logo from './logo.svg';
 import './App.css';
@@ -7,38 +7,34 @@ import 'bootstrap/dist/css/bootstrap.css';
 import AudioRecorder from 'react-audio-recorder';
 import ado from './Reeti.mp3';
 import {BrowserRouter as Router,Switch,Route,Link} from 'react-router-dom';
-import samtext from "./questions"
 import VoiceRecorder from "./recorder.js"
 import axios from "axios";
 
-import qpic from './music_image.jpg';
+import qpic from './kittu_123456.jpg';
 import ReactAudioPlayer from 'react-audio-player';
-import QuestionChoice from "./QuestionC.js";
-import Qpc from "./pc.js";
-import Iq from "./iq.js";
-import L from "./lis.js";
 
-import F from "./final.js";
-import xtype from 'xtypejs'
+import {domain} from "./config.js";
 
+import xtype from 'xtypejs';
 function Questions(props) {
-
-
-
+console.log(useContext(domain));
+console.log(props.qlist.questions,"props.count");
 const [questions,setQuestions] = useState([]);
 useEffect(() =>{
-axios.get('http://3.138.184.54:8000/questions')
-.then(res => {
-setQuestions(res.data.data[props.count-1])
-
-})
+//axios.get('http://localhost:8000/questions')
+//.then(res => {
+console.log(props.qlist.paper_name,"props -1")
+setQuestions(props.qlist.questions[props.count])
+//
+//})
 });
-
+console.log(questions,"questions check");
 
 {
+//{if (questions.qtype == true){
  if (questions.q_type == "C" ) {
 return(<>
-<h2 className="mt-3 ml-4 text-left">{props.count}) {questions.q_name}</h2>
+<h2 className="mt-3 ml-4 text-left">{props.count +1}) {questions.q_name}</h2>
 	<table  className="custom-font mt-4">
 	  <tr>
 		<td>
@@ -87,24 +83,24 @@ return(<>
 </>)
 } else if( questions.q_type == "I" ){
 return(<>
-<h2 className="mt-3 ml-4 text-left">{props.count}) {questions.q_name}</h2><br/><br/>
+<h2 className="mt-3 ml-4 text-left">{props.count + 1}) {questions.q_name}</h2><br/><br/>
 	<input  className="Inputfield"/>
 </>
 )
 }
 else if( questions.q_type == "P" ){
-{if(questions.mediaorigin == 'F'){
+{if(questions.mediasource == 'F'){
 
 return(<>
-<h2 className="mt-3 ml-4 text-left">{props.count}) {questions.q_name}</h2>
-<img src={require('./music_image.jpg')} alt="image_display_error" className="text-left" width="300" height="150" /><br/><br/>
+<h2 className="mt-3 ml-4 text-left">{props.count + 1}) {questions.q_name}</h2>
+<img src={require('./kittu_123456.jpg')} alt="image_display_error" className="text-left" width="300" height="150" /><br/><br/>
 	<input className="Inputfield1"/>
 </>
 )
 }else{
 
 return(<>
-<h2 className="mt-3 ml-4 text-left">{props.count}) {questions.q_name}</h2>
+<h2 className="mt-3 ml-4 text-left">{props.count +1}) {questions.q_name}</h2>
 <img src={questions.media_url} alt="image_display_error" className="text-left" width="300" height="150" /><br/><br/>
 	<input className="Inputfield1"/>
 </>
@@ -115,11 +111,10 @@ return(<>
 }else if( questions.q_type == "A" ){
 return(<>
 
-	<h1>{props.count}) listen audio?</h1>
+	<h1>{props.count +1}){questions.q_name}</h1>
 	<ReactAudioPlayer  src={ado}  autoPlay  controls/>
 
-    <br/><br/>
-    <b>  {questions.q_name}</b><br/>
+    <br/>
  <input className="Inputfield2"/>
 
 
@@ -129,7 +124,7 @@ return(<>
 }else if( questions.q_type == "R" ){
 return(<>
 
-	<h1>{props.count}) {questions.q_name}</h1>
+	<h1>{props.count + 1}) {questions.q_name}</h1>
 	     <br/><br/>
 	     <VoiceRecorder />
 		 <input className="Inputfield3"/>
@@ -142,6 +137,15 @@ style={{ display:'show' }} > <Link className = "cstyle" to = "/f">Proceed</Link>
 )
 }
 }
+
+//else{
+//return(
+//<button className="btn btn-custom"
+//style={{ display:'show' }} > <Link className = "cstyle" to = "/f">Proceed</Link></button>
+//)
+//}
+//}
+//}
 
 //{
 //if (props.exam_code.includes(props.code) ) { console.log('IN if');

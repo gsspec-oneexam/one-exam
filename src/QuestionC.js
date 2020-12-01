@@ -1,21 +1,32 @@
-import React , { useEffect , useState} from 'react';
+import React , { useEffect , useState,useContext} from 'react';
 import { Button } from 'react-bootstrap';
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import {BrowserRouter as Router,Switch,Route,Link} from 'react-router-dom';
-import Question from "./questions"
-import samtext from "./questions"
+import {BrowserRouter as Router,Switch,Route,Link,useLocation} from 'react-router-dom';
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import axios from "axios";
 import ProgressBar from 'react-bootstrap/ProgressBar';
 
 import { Progress } from 'antd';
-import Questions from "./questions_dynamic.js"
+import Questions from "./questions_dynamic.js";
 
 
-
+import questionContext from "./App";
 function QuestionChoice(props) {
+
+
+const { state } = useLocation();
+console.log(state,"staet check")
+useEffect(() => {
+    console.log(state.dat.paper_name,"staet");
+  }, []);
+//
+//    console.log(state.dat.Instructions,"sout taet");
+//const testing = useContext(context);
+//console.log(testing,"q context test")
+//console.log(this.props.location.state,"q props.n")
 const [seconds, setSeconds] = useState(30)
   const [minutes, setMinutes] = useState(1)
   const [qno, setQno] = useState(1)
@@ -60,7 +71,7 @@ const [seconds, setSeconds] = useState(30)
     return function cleanUp() {
       clearTimeout(token);
     }
-  })
+  },[])
 
 const [oseconds, setoSeconds] = useState(0)
   const [ominutes, setoMinutes] = useState(45)
@@ -85,18 +96,21 @@ const [oseconds, setoSeconds] = useState(0)
     }
   }
   }}
-
-const [quest_length, setQuest_length] = useState('')
+console.log(state.dat.paper_name,"lencheck");
+const [quest_length, setQuest_length] = useState(state.dat.questions.length)
 const [questions,setQuestions] = useState([]);
-useEffect(() =>{
-axios.get('http://3.138.184.54:8000/questions')
-.then(res =>{
-setQuest_length(res.data.data.length)
-setQuestions(res.data.data)
+//useEffect(() =>{
+//axios.get('http://localhost:8000/questions')
+//.then(res =>{
+//setQuest_length(res.data.data.length)
+//setQuestions(res.data.data)
+//
+//})
 
-})
-},[setQuestions]);
+//setQuest_length(state.dat.questions.length)
+//},[state.dat.questions]);
 
+console.log(quest_length,"quest_length check 1");
 
 
 
@@ -109,8 +123,8 @@ setQuestions(res.data.data)
     return function cleanUp() {
       clearTimeout(token);
     }
-  })
-const [count,setCount] = useState(1)
+  },[])
+const [count,setCount] = useState(0)
 function inc_count(){
 
 setCount(prevCount => prevCount +1 )
@@ -127,7 +141,7 @@ setSeconds(30);
 const [pgbar,setPgbar] =  useState(0)
 useEffect(() => {
     setPgbar((count / quest_length)*100)
-  },[count])
+  })
   const [ans,setAns] = useState(0)
   function skip_q(){
 
@@ -145,22 +159,20 @@ setAns(prevCount => prevCount +1 )
 setSeconds(30);
       setMinutes(1);
 }
-  {if(count - 1  != quest_length){
+  {if(count   != quest_length){
   return (
-  <Router>
-<Switch>
 
 
-<Route exact path = "/quest2" exact component={Question} />
+
 <div>
 <div className="content-div" align="center">
 <div className="title-div"><br /><br />
-	<label className="title-label">{props.paper}</label>
+	<label className="title-label">{state.dat.paper_name}</label>
 </div>
 <div className="grid-container">
     <div className="font">
        <label className="section-label">Section-1</label>&nbsp;&nbsp;
-	    <label className="question-label">Question {count} / {quest_length}</label>
+	    <label className="question-label">Question {count +1} / {quest_length}</label>
     </div>
 
     <div className="font">
@@ -169,11 +181,21 @@ setSeconds(30);
 
 </div>
 
-<div className="middle-div ">
-<Questions quest={questions} total_q={quest_length} count={count}/>
 
+<div className="middle-div ">
+
+<Questions qlist={state.dat} quest={questions} total_q={quest_length} count={count}/>
 <div className="nav-button-div text-center">
+  <If condition={count == 0}>
+        <Then>
+        <></>
+        </Then>
+
+        <Else>
+
 <button className="btn btn-custom" onClick={dec_count}>Back</button>{' '}
+        </Else>
+      </If>
 <button className="btn btn-custom ml-5"  onClick={skip_q}>Skip</button>{' '}
 <button className="btn btn-custom ml-5" onClick={ans_q} >Next</button>{' '}
 </div>
@@ -185,21 +207,15 @@ setSeconds(30);
 </div>
 </div>
 </div>
-</Switch>
-</Router>
+
   );
   }else{return (
 
 
-  <Router>
-<Switch>
-
-
-<Route exact path = "/quest2" exact component={Question} />
 <div>
 <div className="content-div" align="center">
 <div className="title-div"><br /><br />
-	<label className="title-label">Carnatic Music Theory Exam Paper - 1</label>
+	<label className="title-label">{state.dat.paper_name}</label>
 </div>
     <div className="font">
        <center>Exam Summary</center>
@@ -222,8 +238,6 @@ setSeconds(30);
 
 </div>
 </div>
-</Switch>
-</Router>
   );
 
   }}
