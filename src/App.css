@@ -74,14 +74,7 @@ btn-primary.content-div{
 	font-family:Calibri;
 	padding-left:200px;
 }
-.middle-div{
-	width:979px;
-	height:280px;
-	border-color: #ECECEC;
-	border-style: solid;
-	border-width: 2px;
-	margin-top:10px;
-}
+
 .code-div{
 	width:979px;
 	height:100px;
@@ -100,14 +93,7 @@ btn-primary.content-div{
 	margin-top:10px;
 	text-align:left;
 }
-.middle-div .question-div{
-	width:963px;
-	height:64px;
-	border-color: #ECECEC;
-	border-style: solid;
-	border-width: 2px;
-	margin-top:10px;
-}
+
 .middle-div .option-div{
 	width:963px;
 	height:170px;
@@ -226,22 +212,6 @@ btn-primary.content-div{
 	border-width: 2px;
 	margin-top:10px;
 }
-.middle-div .question-div{
-	width:963px;
-	height:64px;
-	border-color: #ECECEC;
-	border-style: solid;
-	border-width: 2px;
-	margin-top:10px;
-}
-.middle-div .option-div{
-	width:963px;
-	height:170px;
-	border-color: #ECECEC;
-	border-style: solid;
-	border-width: 2px;
-	margin-top:10px;
-}
 
 .content-div{
 	width:1041px;
@@ -316,16 +286,8 @@ btn-primary.content-div{
 	border-width: 2px;
 	margin-top:10px;
 }
-.middle-div .option-div{
-	width:963px;
-	height:170px;
-	border-color: #ECECEC;
-	border-style: solid;
-	border-width: 2px;
-	margin-top:10px;
-}
+
 table {
-    border-collapse: separate;
     border-spacing: 30px;
 }
 .next{

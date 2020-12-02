@@ -3,7 +3,8 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
-from api_services.models import Question, Paper_section, Participant, Paper_Instance, Option, Media, Paper, Paper_Question
+from api_services.models import Question, Paper_section, Participant, Paper_Instance, Option, Media, Paper, Paper_Question, \
+    Paper_answer
 
 
 def questionsView(request):
@@ -80,9 +81,12 @@ def questionsView(request):
 def oneExamView(request):
     try:
         response = {
+            'participant':None,
             'paper_name':None,
+            'paper_instance_id':None,
             'Instructions':None,
             'questions':None,
+            'section':None,
             'error': None,
             'statusCode': 1
         }
@@ -148,13 +152,19 @@ def oneExamView(request):
                                 "q_type": question.question_type,
                             }
                             questions_obj.append(temp)
+
+                response['participant'] = participant_id
                 response['questions'] = questions_obj
                 response['paper_name'] = paper.paper_name
+
+                response['paper_instance_id'] = participant_details.id
                 return JsonResponse(response)
             else:
                 instrctions_obj = []
+                section = []
                 participant_details = Paper_Instance.objects.get(participant_key=participant_key)
                 paper_id = participant_details.paper_id
+                participant_id = participant_details.participant_id
                 question_details = Paper_Question.objects.filter(paper_id=paper_id).order_by('question_order')
                 questions_obj = []
                 for question_detail in question_details:
@@ -214,8 +224,13 @@ def oneExamView(request):
                 paper_sections = Paper_section.objects.filter(section_paper_id = paper_id)
                 for instruction in paper_sections:
                     instrctions_obj.append(instruction.section_instructions)
+                    section.append(instruction.section_name)
+
+                response['participant'] = participant_id
                 response['paper_name'] = paper.paper_name
+                response['paper_instance_id'] = participant_details.id
                 response['Instructions'] = instrctions_obj
+                response['section'] = section
                 participant_key = ""
                 return JsonResponse(response)
         if request.method == "GET":
@@ -235,6 +250,35 @@ def oneExamView(request):
     except Exception as e:
         print(e)
 
+
+@csrf_exempt
+def exam_answers(request):
+    try:
+        response = {
+            'data':None,
+            'error': None,
+            'statusCode': 1
+        }
+        if request.method == "POST":
+            data = json.loads(request.body)
+
+
+            paper_details = Paper.objects.get(paper_name=data['paper_name'])
+            paper_answer, paper_answer_stat = Paper_answer.objects.get_or_create(
+                                                        answer_paper_instance_id=data['paper_instance_id'],
+                                                        answer_paper_id=paper_details.paper_id,
+                                                        answer_participant_id=data['participant_id'],
+                                                        answer_question_id=data['question_id']
+                                                                                 )
+            paper_answer.answer_subject_id = paper_details.paper_subject
+            if 'ans' in data:
+                paper_answer.answer_question_response = data['ans']
+            else:
+                paper_answer.answer_question_response = "null"
+            paper_answer.save()
+            return JsonResponse(response)
+    except Exception as e:
+        print(e)
 
 def exam_code_verification_view(request):
     try:

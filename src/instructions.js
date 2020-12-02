@@ -1,6 +1,6 @@
 import React , { useEffect ,useRef, useState,useContext} from 'react';
 import { Button } from 'react-bootstrap';
-import {BrowserRouter as Router,Switch,Route,Link,useHistory } from 'react-router-dom';
+import {BrowserRouter as Router,Switch,Route,Link,useHistory,useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,6 +12,8 @@ import {domain} from "./config.js";
 
 function Instructions(props) {
 const history = useHistory();
+
+const { prt_code } = useLocation();
 function handleClick() {
     history.push("/quest");
   }
@@ -22,6 +24,7 @@ const[dat,setDta] = useState([])
 const[paper,setPaper] = useState("")
 const [instructions,setInstructions] = useState([]);
 
+const [questions,setQuestions] = useState([]);
 const [instr,setInstr] = useState(props.code);
 
 const Domain = useContext(domain)
@@ -64,17 +67,7 @@ console.log(dat,"dta check")
 
 <h3>Instructions</h3>
 <div className="ins-div text-center">
-  <If condition={1 == 1}>
-        <Then>
-          <p>Then: 1</p>
-        </Then>
-        <ElseIf condition={1 == 2}>
-          <p>ElseIf: 2</p>
-        </ElseIf>
-        <Else>
-          <p>Else</p>
-        </Else>
-      </If>
+
 <p className="text-left ml-3 mt-2">{instructions}</p>
 
 

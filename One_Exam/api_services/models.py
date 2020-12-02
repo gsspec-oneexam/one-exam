@@ -230,7 +230,7 @@ class Paper_answer(models.Model):
     answer_date = models.DateTimeField(null=True)
     answer_paper_id = models.IntegerField()
     answer_paper_instance_id = models.IntegerField()
-    answer_subject_id = models.IntegerField()
+    answer_subject_id = models.IntegerField(null=True,blank=True)
     answer_question_id = models.IntegerField()
     answer_participant_id = models.IntegerField()
     answer_question_response = models.CharField(max_length=256,null=True,blank=True)

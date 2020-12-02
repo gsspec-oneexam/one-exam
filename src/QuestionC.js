@@ -8,20 +8,28 @@ import {BrowserRouter as Router,Switch,Route,Link,useLocation} from 'react-route
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import axios from "axios";
 import ProgressBar from 'react-bootstrap/ProgressBar';
-
+import VoiceRecorder from "./recorder.js";
+//import AudioRecorder from 'react-audio-recorder';
+import ado from './Reeti.mp3';
+import ReactAudioPlayer from 'react-audio-player';
 import { Progress } from 'antd';
 import Questions from "./questions_dynamic.js";
 
+import {domain} from "./config.js";
 
 import questionContext from "./App";
 function QuestionChoice(props) {
 
 
+const Domain = useContext(domain)
+const [answer, setAnswer] = useState()
 const { state } = useLocation();
 console.log(state,"staet check")
 useEffect(() => {
-    console.log(state.dat.paper_name,"staet");
+    console.log(state.dat.participant_id,"staet");
   }, []);
+
+    console.log(state.dat,"staet");
 //
 //    console.log(state.dat.Instructions,"sout taet");
 //const testing = useContext(context);
@@ -60,7 +68,7 @@ const [seconds, setSeconds] = useState(30)
     }
   }}}
 
-
+console.log(answer,"ans");
 
   useEffect(() => {
     // use set timeout and be confident because updateTime will cause rerender
@@ -71,7 +79,7 @@ const [seconds, setSeconds] = useState(30)
     return function cleanUp() {
       clearTimeout(token);
     }
-  },[])
+  })
 
 const [oseconds, setoSeconds] = useState(0)
   const [ominutes, setoMinutes] = useState(45)
@@ -96,7 +104,7 @@ const [oseconds, setoSeconds] = useState(0)
     }
   }
   }}
-console.log(state.dat.paper_name,"lencheck");
+console.log(state.dat.section,"lencheck");
 const [quest_length, setQuest_length] = useState(state.dat.questions.length)
 const [questions,setQuestions] = useState([]);
 //useEffect(() =>{
@@ -133,6 +141,7 @@ setSeconds(30);
 }
 function dec_count(){
 
+setAns(prevCount => prevCount -1 )
 setCount(prevCount => prevCount -1 )
 setSeconds(30);
       setMinutes(1);
@@ -143,7 +152,7 @@ useEffect(() => {
     setPgbar((count / quest_length)*100)
   })
   const [ans,setAns] = useState(0)
-  function skip_q(){
+ function skip_q(){
 
 setCount(prevCount => prevCount +1 )
 
@@ -152,13 +161,37 @@ setSeconds(30);
       setMinutes(1);
 }
   function ans_q(){
+const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify({ participant_id: state.dat.participant,
+                                paper_name:state.dat.paper_name,
+                                paper_instance_id : state.dat.paper_instance_id,
+                                question_id:questions.q_id,
+                                ans:answer
 
+         })
+    };
+    fetch('http://'+Domain+'/exam_ans', requestOptions)
+        .then(res =>res.json())
+//        .then(data => {setDta(data);setInstructions(data.Instructions);setPaper(data.paper_name)
+//}
+//)
 setCount(prevCount => prevCount +1 )
 
 setAns(prevCount => prevCount +1 )
 setSeconds(30);
       setMinutes(1);
 }
+
+useEffect(() =>{
+//axios.get('http://localhost:8000/questions')
+//.then(res => {
+//console.log(props.qlist.paper_name,"props -1")
+setQuestions(state.dat.questions[count])
+//
+//})
+});
+
   {if(count   != quest_length){
   return (
 
@@ -171,7 +204,7 @@ setSeconds(30);
 </div>
 <div className="grid-container">
     <div className="font">
-       <label className="section-label">Section-1</label>&nbsp;&nbsp;
+       <label className="section-label">{state.dat.section}</label>&nbsp;&nbsp;
 	    <label className="question-label">Question {count +1} / {quest_length}</label>
     </div>
 
@@ -184,7 +217,123 @@ setSeconds(30);
 
 <div className="middle-div ">
 
-<Questions qlist={state.dat} quest={questions} total_q={quest_length} count={count}/>
+
+<If condition={questions.q_type == "C"}>
+
+<Then><>
+<h2 className="mt-3 ml-4 text-left">{count +1}) {questions.q_name}</h2>
+	<table  className="custom-font mt-4">
+	  <tr>
+		<td>
+    <div className="radio-item">
+    <input type="radio" onChange={event => setAnswer(event.target.value)} id={questions.opt1} name={questions.q_name} value={questions.opt1}/>
+    <label for="thyagaraj">{questions.opt1}</label>
+    </div>
+		</td>
+		<td>
+    <div className="radio-item">
+    <input type="radio" onChange={event => setAnswer(event.target.value)} id={questions.opt2} name={questions.q_name} value={questions.opt2}/>
+    <label for={questions.opt2}>{questions.opt2}</label>
+    </div>
+		</td>
+	  </tr>
+	  <tr>
+		<td>
+    <div className="radio-item">
+    <input onChange={event => setAnswer(event.target.value)} type="radio" id={questions.opt3} name={questions.q_name} value={questions.opt3}/>
+    <label for={questions.opt3}>{questions.opt3}</label>
+    </div>
+		</td>
+		<td>
+    <div className="radio-item">
+  <input type="radio" onChange={event => setAnswer(event.target.value)} id={questions.opt4} name={questions.q_name} value={questions.opt4}/>
+    <label for={questions.opt4}>{questions.opt4}</label>
+    </div>
+		</td>
+	  </tr>
+	  <tr>
+	  <td>
+    <div className="radio-item">
+    <input onChange={event => setAnswer(event.target.value)} type="radio" id={questions.opt5} name={questions.q_name} value={questions.opt5}/>
+    <label for={questions.opt5}>{questions.opt5}</label>
+    </div>
+	  </td>
+	  </tr>
+	</table>
+	<br/><br/>
+</>
+</Then>
+
+<ElseIf condition={questions.q_type == "I"}>
+<>
+<h2 className="mt-3 ml-4 text-left">{count + 1}) {questions.q_name}</h2><br/><br/>
+	<input onChange={event => setAnswer(event.target.value)} className="Inputfield"/>
+</>
+</ElseIf>
+
+
+
+<ElseIf condition={questions.q_type == "P"}>
+
+<If condition={questions.mediasource == 'F'}>
+
+
+<Then>
+
+<>
+<h2 className="mt-3 ml-4 text-left">{count + 1}) {questions.q_name}</h2>
+<img src={require('./kittu_123456.jpg')} alt="image_display_error" className="text-left" width="300" height="150" /><br/><br/>
+	<input onChange={event => setAnswer(event.target.value)} className="Inputfield1"/>
+</>
+</Then>
+
+<Else>
+
+<>
+<h2 className="mt-3 ml-4 text-left">{count +1}) {questions.q_name}</h2>
+<img src={questions.media_url} alt="image_display_error" className="text-left" width="300" height="150" /><br/><br/>
+	<input onChange={event => setAnswer(event.target.value)} className="Inputfield1"/>
+</>
+</Else>
+      </If>
+
+
+</ElseIf>
+<ElseIf condition={questions.q_type == "A"}>
+<>
+
+	<h1>{count +1}){questions.q_name}</h1>
+	<ReactAudioPlayer  src={ado}  autoPlay  controls/>
+
+    <br/><br/>
+ <input onChange={event => setAnswer(event.target.value)} className="Inputfield2"/>
+<br/><br/>
+
+
+</>
+</ElseIf>
+
+
+<ElseIf condition={questions.q_type == "R"}>
+<>
+
+	<h1>{count + 1}) {questions.q_name}</h1>
+	     <br/><br/>
+	     <VoiceRecorder />
+	     <br/><br/>
+	     <br/><br/>
+
+</>
+
+</ElseIf>
+<Else>
+
+<button className="btn btn-custom"
+style={{ display:'show' }} > <Link className = "cstyle" to = "/f">Proceed</Link></button>
+</Else>
+      </If>
+
+
 <div className="nav-button-div text-center">
   <If condition={count == 0}>
         <Then>
