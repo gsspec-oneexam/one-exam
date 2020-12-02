@@ -227,7 +227,7 @@ setQuestions(state.dat.questions[count])
 		<td>
     <div className="radio-item">
     <input type="radio" onChange={event => setAnswer(event.target.value)} id={questions.opt1} name={questions.q_name} value={questions.opt1}/>
-    <label for="thyagaraj">{questions.opt1}</label>
+    <label for={questions.opt1}>{questions.opt1}</label>
     </div>
 		</td>
 		<td>
