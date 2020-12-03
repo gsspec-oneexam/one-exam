@@ -9,7 +9,6 @@ import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import axios from "axios";
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import VoiceRecorder from "./recorder.js";
-//import AudioRecorder from 'react-audio-recorder';
 import ado from './Reeti.mp3';
 import ReactAudioPlayer from 'react-audio-player';
 import { Progress } from 'antd';
