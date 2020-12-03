@@ -153,7 +153,19 @@ useEffect(() => {
   })
   const [ans,setAns] = useState(0)
  function skip_q(){
+const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify({ participant_id: state.dat.participant,
+                                paper_name:state.dat.paper_name,
+                                paper_instance_id : state.dat.paper_instance_id,
+                                question_id:questions.q_id,
+                                ans:"null"
 
+         })
+    };
+    fetch('http://'+Domain+'/exam_ans', requestOptions)
+        .then(res =>res.json())
+        .then(setAnswer())
 setCount(prevCount => prevCount +1 )
 
 setSkipped(prevCount => prevCount +1 )
@@ -173,6 +185,7 @@ const requestOptions = {
     };
     fetch('http://'+Domain+'/exam_ans', requestOptions)
         .then(res =>res.json())
+        .then(setAnswer())
 //        .then(data => {setDta(data);setInstructions(data.Instructions);setPaper(data.paper_name)
 //}
 //)
@@ -209,7 +222,26 @@ setQuestions(state.dat.questions[count])
     </div>
 
     <div className="font">
+    <If condition={seconds <= 9}>
+
+<Then>
+
+    <If condition={seconds <= 9 && minutes == 0}>
+    <Then>
+        <label className="time-label" >Time Left: <label className="time-label" style={{color: "red"}}>0{minutes}:0{seconds}</label> </label>
+        </Then>
+        <Else>
+        <label className="time-label">Time Left: 0{minutes}:0{seconds}</label>
+        </Else>
+        </If>
+        </Then>
+        <Else>
         <label className="time-label">Time Left: 0{minutes}:{seconds}</label>
+        </Else>
+        </If>
+
+
+
     </div>
 
 </div>
@@ -226,13 +258,13 @@ setQuestions(state.dat.questions[count])
 	  <tr>
 		<td>
     <div className="radio-item">
-    <input type="radio" onChange={event => setAnswer(event.target.value)} id={questions.opt1} name={questions.q_name} value={questions.opt1}/>
+    <input type="radio" checked = {answer == questions.opt1} onChange={event => setAnswer(event.target.value)} id={questions.opt1} name={questions.q_name} value={questions.opt1}/>
     <label for={questions.opt1}>{questions.opt1}</label>
     </div>
 		</td>
 		<td>
     <div className="radio-item">
-    <input type="radio" onChange={event => setAnswer(event.target.value)} id={questions.opt2} name={questions.q_name} value={questions.opt2}/>
+    <input type="radio" checked = {answer == questions.opt2} onChange={event => setAnswer(event.target.value)} id={questions.opt2} name={questions.q_name} value={questions.opt2}/>
     <label for={questions.opt2}>{questions.opt2}</label>
     </div>
 		</td>
@@ -240,13 +272,13 @@ setQuestions(state.dat.questions[count])
 	  <tr>
 		<td>
     <div className="radio-item">
-    <input onChange={event => setAnswer(event.target.value)} type="radio" id={questions.opt3} name={questions.q_name} value={questions.opt3}/>
+    <input onChange={event => setAnswer(event.target.value)} checked = {answer == questions.opt3} type="radio" id={questions.opt3} name={questions.q_name} value={questions.opt3}/>
     <label for={questions.opt3}>{questions.opt3}</label>
     </div>
 		</td>
 		<td>
     <div className="radio-item">
-  <input type="radio" onChange={event => setAnswer(event.target.value)} id={questions.opt4} name={questions.q_name} value={questions.opt4}/>
+  <input type="radio" onChange={event => setAnswer(event.target.value)} checked = {answer == questions.opt4} id={questions.opt4} name={questions.q_name} value={questions.opt4}/>
     <label for={questions.opt4}>{questions.opt4}</label>
     </div>
 		</td>
@@ -254,7 +286,7 @@ setQuestions(state.dat.questions[count])
 	  <tr>
 	  <td>
     <div className="radio-item">
-    <input onChange={event => setAnswer(event.target.value)} type="radio" id={questions.opt5} name={questions.q_name} value={questions.opt5}/>
+    <input onChange={event => setAnswer(event.target.value)} checked = {answer == questions.opt5} type="radio" id={questions.opt5} name={questions.q_name} value={questions.opt5}/>
     <label for={questions.opt5}>{questions.opt5}</label>
     </div>
 	  </td>
@@ -337,7 +369,8 @@ style={{ display:'show' }} > <Link className = "cstyle" to = "/f">Proceed</Link>
 <div className="nav-button-div text-center">
   <If condition={count == 0}>
         <Then>
-        <></>
+
+<button className="btn btn-custom" onClick={dec_count} disabled>Back</button>{' '}
         </Then>
 
         <Else>
@@ -346,7 +379,17 @@ style={{ display:'show' }} > <Link className = "cstyle" to = "/f">Proceed</Link>
         </Else>
       </If>
 <button className="btn btn-custom ml-5"  onClick={skip_q}>Skip</button>{' '}
+   <If condition={answer}>
+
+<Then>
+
 <button className="btn btn-custom ml-5" onClick={ans_q} >Next</button>{' '}
+        </Then>
+        <Else>
+
+<button className="btn btn-custom ml-5" onClick={ans_q} disabled>Next</button>{' '}
+        </Else>
+        </If>
 </div>
     <ProgressBar className="mt-4" now={pgbar} />
 
