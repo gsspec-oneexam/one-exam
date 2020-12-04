@@ -67,8 +67,12 @@ console.log(dat,"dta check")
 
 <h3>Instructions</h3>
 <div className="ins-div text-center">
+{instructions.map((instruction,index) => (
+<p className="text-left ml-3 mt-1">
 
-<p className="text-left ml-3 mt-2">{instructions}</p>
+        {index+1}) {instruction}
+
+      </p> ))}
 
 
 

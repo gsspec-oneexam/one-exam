@@ -91,9 +91,11 @@ def oneExamView(request):
             'statusCode': 1
         }
         if request.method == "POST":
-            global participant_key
+            global participant_key, instrctions_obj
             data = json.loads(request.body)
             if data != {}:
+
+                section = []
                 participant_key = data['participant_key']
                 response['data'] = [{"response": data['participant_key']}]
                 participant_details = Paper_Instance.objects.get(participant_key = participant_key)
@@ -152,15 +154,18 @@ def oneExamView(request):
                                 "q_type": question.question_type,
                             }
                             questions_obj.append(temp)
-
+                paper_sections = Paper_section.objects.filter(section_paper_id = paper_id)
+                for instruction in paper_sections:
+                    instrctions_obj = instruction.section_instructions.split("||")
+                    section.append(instruction.section_name)
                 response['participant'] = participant_id
                 response['questions'] = questions_obj
                 response['paper_name'] = paper.paper_name
-
+                response['Instructions'] = instrctions_obj
+                response['section'] = section
                 response['paper_instance_id'] = participant_details.id
                 return JsonResponse(response)
             else:
-                instrctions_obj = []
                 section = []
                 participant_details = Paper_Instance.objects.get(participant_key=participant_key)
                 paper_id = participant_details.paper_id
@@ -223,7 +228,7 @@ def oneExamView(request):
                 paper = Paper.objects.get(paper_id=paper_id)
                 paper_sections = Paper_section.objects.filter(section_paper_id = paper_id)
                 for instruction in paper_sections:
-                    instrctions_obj.append(instruction.section_instructions)
+                    instrctions_obj = instruction.section_instructions.split("||")
                     section.append(instruction.section_name)
 
                 response['participant'] = participant_id
