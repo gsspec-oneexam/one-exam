@@ -1,4 +1,6 @@
 import json
+from itertools import count
+
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -15,8 +17,8 @@ def questionsView(request):
             'statusCode': 1
         }
         if request.method == "GET":
-            paper_id = 1
-            question_details = Paper_Question.objects.filter(paper_id=paper_id).order_by('question_order')
+            # paper_id = 1
+            question_details = Paper_Question.objects.all().order_by('question_order')
             questions_obj = []
             for question_detail in question_details:
                 question_db = Question.objects.filter(question_status='A',id=question_detail.question_id)
@@ -117,7 +119,8 @@ def oneExamView(request):
                                 "opt2": options[1].option_name,
                                 "opt3": options[2].option_name,
                                 "opt4": options[3].option_name,
-                                "opt5": options[4].option_name
+                                "opt5": options[4].option_name,
+                                "q_time":question_detail.question_time
                             }
 
                             questions_obj.append(temp)
@@ -126,6 +129,7 @@ def oneExamView(request):
                                 "q_id":question.id,
                                 "q_name": question.question,
                                 "q_type": question.question_type,
+                                "q_time":question_detail.question_time
                             }
                             questions_obj.append(temp)
                         if question.question_type == 'P':
@@ -135,7 +139,8 @@ def oneExamView(request):
                                 "q_name": question.question,
                                 "q_type": question.question_type,
                                 "mediasource": media.mediasource,
-                                "media_url": media.media_url
+                                "media_url": media.media_url,
+                                "q_time":question_detail.question_time
                             }
                             questions_obj.append(temp)
                         if question.question_type == 'A':
@@ -145,13 +150,15 @@ def oneExamView(request):
                                 "q_name": question.question,
                                 "q_type": question.question_type,
                                 "mediasource": media.mediasource,
-                                "media_url": media.media_url
+                                "media_url": media.media_url,
+                                "q_time":question_detail.question_time
                             }
                             questions_obj.append(temp)
                         if question.question_type == 'R':
                             temp = {
                                 "q_name": question.question,
                                 "q_type": question.question_type,
+                                "q_time":question_detail.question_time
                             }
                             questions_obj.append(temp)
                 paper_sections = Paper_section.objects.filter(section_paper_id = paper_id)
@@ -185,7 +192,8 @@ def oneExamView(request):
                                 "opt2": options[1].option_name,
                                 "opt3": options[2].option_name,
                                 "opt4": options[3].option_name,
-                                "opt5": options[4].option_name
+                                "opt5": options[4].option_name,
+                                "q_time":question_detail.question_time
                             }
 
                             questions_obj.append(temp)
@@ -194,6 +202,7 @@ def oneExamView(request):
                                 "q_id":question.id,
                                 "q_name": question.question,
                                 "q_type": question.question_type,
+                                "q_time":question_detail.question_time
                             }
                             questions_obj.append(temp)
                         if question.question_type == 'P':
@@ -203,7 +212,8 @@ def oneExamView(request):
                                 "q_name": question.question,
                                 "q_type": question.question_type,
                                 "mediasource": media.mediasource,
-                                "media_url": media.media_url
+                                "media_url": media.media_url,
+                                "q_time":question_detail.question_time
                             }
                             questions_obj.append(temp)
                         if question.question_type == 'A':
@@ -213,7 +223,8 @@ def oneExamView(request):
                                 "q_name": question.question,
                                 "q_type": question.question_type,
                                 "mediasource": media.mediasource,
-                                "media_url": media.media_url
+                                "media_url": media.media_url,
+                                "q_time":question_detail.question_time
                             }
                             questions_obj.append(temp)
                         if question.question_type == 'R':
@@ -221,6 +232,7 @@ def oneExamView(request):
                                 "q_id":question.id,
                                 "q_name": question.question,
                                 "q_type": question.question_type,
+                                "q_time":question_detail.question_time
                             }
                             questions_obj.append(temp)
                 response['questions'] = questions_obj
@@ -301,5 +313,26 @@ def exam_code_verification_view(request):
             response['data'] = exam_code_obj
             response['statusCode'] = 0
             return JsonResponse(response)
+    except Exception as e:
+        print(e)
+
+
+@csrf_exempt
+def examinar_dashboard(request):
+    response = {
+        'participants': None,
+        'papers': None,
+        'error': None,
+        'statusCode': 1
+    }
+    try:
+
+        papers = Paper.objects.all()
+        students = Participant.objects.all()
+        response['papers'] = len(papers)
+        response['participants'] = len(students)
+        response['statusCode'] = 0
+        return JsonResponse(response)
+
     except Exception as e:
         print(e)

@@ -27,7 +27,7 @@ setExam_code(res.data.data)
 )
 
 },[]);
-console.log(exam_code,"code out");
+//console.log(exam_code,"code out");
 
 {
 if(props.code == "null"){

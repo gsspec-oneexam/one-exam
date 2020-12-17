@@ -17,7 +17,7 @@ const { prt_code } = useLocation();
 function handleClick() {
     history.push("/quest");
   }
-console.log(props.code,"code test");
+//console.log(props.code,"code test");
 
 const[dat,setDta] = useState([])
 
@@ -29,7 +29,7 @@ const [instr,setInstr] = useState(props.code);
 
 const Domain = useContext(domain)
 useEffect(() => {
-console.log(props.code,"get code")
+//console.log(props.code,"get code")
 const requestOptions = {
         method: 'POST',
         body: JSON.stringify({ participant_key: props.code })
@@ -42,7 +42,7 @@ const requestOptions = {
 
 
 }, []);
-console.log(dat,"dta check")
+//console.log(dat,"dta check")
 
 //
 //useEffect(() =>{
