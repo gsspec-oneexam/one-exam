@@ -19,7 +19,9 @@ import {domain} from "./config.js";
 
 import questionContext from "./App";
 function QuestionChoice(props) {
-
+window.onbeforeunload = function() {
+    return "Refresh not allowed";
+}
 
 const Domain = useContext(domain)
 const [answer, setAnswer] = useState()

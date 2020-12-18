@@ -8,5 +8,6 @@ urlpatterns = [
     path('exam_ans', views.exam_answers),
     path('exam_codes',views.exam_code_verification_view),
     path('dashboard', views.examinar_dashboard),
+    path('participant_form',views.participant_form),
 
 ]

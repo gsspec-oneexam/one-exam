@@ -14,15 +14,18 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Questions from "./questions_dynamic";
 import QuestionChoice from "./QuestionC.js";
 import Instructions from "./instructions.js";
+import Paper_selection from "./paper_selection.js";
+import Partcipant_form from "./participant_form.js";
+import Registered from "./registered.js";
 //
 
 import Code_check from "./exam_code.js";
 
 const questionContext = React.createContext();
 function App() {
-//window.onbeforeunload = function() {
-//    return "Refresh not allowed";
-//}
+window.onbeforeunload = function() {
+    return "Refresh not allowed";
+}
 
 
 
@@ -40,6 +43,9 @@ const [code, setCode] = useState('null')
 <Route exact path = "/ins" exact component={Instructions} />
 
 
+<Route exact path = "/paper_selection" exact component={Paper_selection} />
+<Route exact path = "/participant_registered" exact component={Registered} />
+<Route exact path = "/participant_form" exact component={Partcipant_form} />
 
 <div className="code-content-div" align="center">
 <div className="title-div"><br /><br />

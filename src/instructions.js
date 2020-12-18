@@ -12,7 +12,9 @@ import {domain} from "./config.js";
 
 function Instructions(props) {
 const history = useHistory();
-
+window.onbeforeunload = function() {
+    return "Refresh not allowed";
+}
 const { prt_code } = useLocation();
 function handleClick() {
     history.push("/quest");

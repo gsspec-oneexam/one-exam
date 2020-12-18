@@ -10,7 +10,9 @@ import {domain} from "./config.js";
 
 import axios from "axios";
 function Code_check(props) {
-
+window.onbeforeunload = function() {
+    return "Refresh not allowed";
+}
 const [exam_code,setExam_code] = useState([]);
 const Domain = useContext(domain)
 useEffect(() =>{
@@ -27,7 +29,7 @@ setExam_code(res.data.data)
 )
 
 },[]);
-//console.log(exam_code,"code out");
+console.log(exam_code,"code out");
 
 {
 if(props.code == "null"){
