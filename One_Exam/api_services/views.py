@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from api_services.models import Question, Paper_section, Participant, Paper_Instance, Option, Media, Paper, Paper_Question, \
     Paper_answer, Calender
-
+from api_services.sendemail import sendEmail, sendEmail_to_participant
 
 def questionsView(request):
     try:
@@ -446,6 +446,9 @@ def participant_form(request):
                         participant_state = data['state'],
                         participant_country=data['country']).save()
             response['statusCode'] = 2
+            Paper_Instance(paper_id=data['paper_id'],participant_id=Participant.objects.latest('id').id,
+                           calender_id=1).save()
+            sendEmail_to_participant(Participant.objects.latest('id').id)
             return JsonResponse(response)
     except Exception as e:
         print(e)
