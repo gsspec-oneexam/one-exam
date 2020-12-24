@@ -384,7 +384,7 @@ def exam_code_verification_view(request):
             for exam_code in exam_codes:
                 calender_details = Calender.objects.get(id=exam_code.calender_id)
                 if ((calender_details.schedule_time - datetime.timedelta(
-                        minutes=5)) <= datetime.datetime.now() <= calender_details.schedule_time) or \
+                        minutes=6)) <= datetime.datetime.now() <= calender_details.schedule_time) or \
                         (calender_details.schedule_time < datetime.datetime.now() < (
                                 calender_details.schedule_time + datetime.timedelta(
                             minutes=calender_details.duration))):
@@ -446,8 +446,9 @@ def participant_form(request):
                         participant_state = data['state'],
                         participant_country=data['country']).save()
             response['statusCode'] = 2
+            calender = Calender.objects.get(paper_id=data['paper_id'])
             Paper_Instance(paper_id=data['paper_id'],participant_id=Participant.objects.latest('id').id,
-                           calender_id=1).save()
+                           calender_id=calender.id).save()
             sendEmail_to_participant(Participant.objects.latest('id').id)
             return JsonResponse(response)
     except Exception as e:
