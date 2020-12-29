@@ -411,7 +411,7 @@ def examinar_dashboard(request):
         papers_obj =[]
         for paper in papers:
             temp={
-                'paper_id':paper.id,
+                'paper_id':paper.paper_id,
                 'paper_name':paper.paper_name,
             }
             papers_obj.append(temp)
