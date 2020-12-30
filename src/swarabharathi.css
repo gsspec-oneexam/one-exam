@@ -1,4 +1,5 @@
 body {
+	background-image: url('background.png');
 	background-repeat: no-repeat;
 	  background-attachment: fixed;
 	 background-size: cover;
@@ -9,7 +10,7 @@ btn-primary.content-div{
 	height:600px;
 	margin:0 auto;
 	background-color:#FFF;
-	border-color: #495057;
+	border-color: #FBB699;
 	border-style: solid;
 	border-width: 2px;
 	margin-top: 30px;
@@ -17,7 +18,7 @@ btn-primary.content-div{
 .title-div{
 	width:1037px;
 	height:100px;
-	background-color: #495057;
+	background-color:#F96E2F;
 	text-align: center;
 }
 .title-label{
@@ -49,7 +50,7 @@ btn-primary.content-div{
 .grid-container .grid-child2{
 	width:458px;
 	height:60px;
-	border-color: #495057;
+	border-color: #ECECEC;
 	border-style: solid;
 	border-width: 2px;
 	display: flex;
@@ -76,7 +77,7 @@ btn-primary.content-div{
 .middle-div{
 	width:979px;
 	height:280px;
-	border-color: #495057;
+	border-color: #ECECEC;
 	border-style: solid;
 	border-width: 2px;
 	margin-top:10px;
@@ -113,7 +114,7 @@ btn-primary.content-div{
     height: fit-content;
     margin: 0 auto;
     background-color: #FFF;
-    border-color: #d8d8eb;
+    border-color: #FBB699;
     border-style: solid;
     border-width: 2px;
     margin-top: 50px;
@@ -155,7 +156,7 @@ btn-primary.content-div{
 	height:600px;
 	margin:0 auto;
 	background-color:#FFF;
-	border-color:#d8d8eb;
+	border-color: #FBB699;
 	border-style: solid;
 	border-width: 2px;
 	margin-top: 30px;
@@ -165,7 +166,7 @@ btn-primary.content-div{
 	height:300px;
 	margin:0 auto;
 	background-color:#FFF;
-	border-color: #d8d8eb;
+	border-color: #FBB699;
 	border-style: solid;
 	border-width: 2px;
 	margin-top: 172px;
@@ -175,7 +176,7 @@ btn-primary.content-div{
 	height:500px;
 	margin:0 auto;
 	background-color:#FFF;
-	border-color: #d8d8eb;
+	border-color: #FBB699;
 	border-style: solid;
 	border-width: 2px;
 	margin-top: 50px;
@@ -259,6 +260,17 @@ btn-primary.content-div{
 	border-style: solid;
 	border-width: 2px;
 	margin-top:10px;
+}
+
+.content-div{
+	width:1041px;
+	height:600px;
+	margin:0 auto;
+	background-color:#FFF;
+	border-color: #FBB699;
+	border-style: solid;
+	border-width: 2px;
+	margin-top: 30px;
 }
 
 .title-label{
@@ -482,7 +494,7 @@ background-color: #F06D17;
     width: 25px;
     height: 25px;
     border-radius: 14px;
-    border: 2px solid #1256bd;
+    border: 2px solid #F06D17;
     background-color: transparent;
 }
 
@@ -495,12 +507,12 @@ background-color: #F06D17;
     left: 11px;
     content: " ";
     display: block;
-    background: #1256bd;
+    background: #F06D17;
 }
 
 .invalid-text{
    margin-top: 45px;
-	color: #1256bd;
+	color: #F06D17;
 }
 
 .Inputfield{

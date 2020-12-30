@@ -9,7 +9,7 @@ btn-primary.content-div{
 	height:600px;
 	margin:0 auto;
 	background-color:#FFF;
-	border-color: #495057;
+	border-color: #d8d8eb;
 	border-style: solid;
 	border-width: 2px;
 	margin-top: 30px;
@@ -17,7 +17,7 @@ btn-primary.content-div{
 .title-div{
 	width:1037px;
 	height:100px;
-	background-color: #495057;
+	background-color: #00b2ff;
 	text-align: center;
 }
 .title-label{
@@ -49,7 +49,7 @@ btn-primary.content-div{
 .grid-container .grid-child2{
 	width:458px;
 	height:60px;
-	border-color: #495057;
+	border-color: #ECECEC;
 	border-style: solid;
 	border-width: 2px;
 	display: flex;
@@ -76,7 +76,7 @@ btn-primary.content-div{
 .middle-div{
 	width:979px;
 	height:280px;
-	border-color: #495057;
+	border-color: #ECECEC;
 	border-style: solid;
 	border-width: 2px;
 	margin-top:10px;

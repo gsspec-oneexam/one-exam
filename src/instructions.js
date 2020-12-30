@@ -2,9 +2,9 @@ import React , { useEffect ,useRef, useState,useContext} from 'react';
 import { Button } from 'react-bootstrap';
 import {BrowserRouter as Router,Switch,Route,Link,useHistory,useLocation } from 'react-router-dom';
 import axios from 'axios';
-import './App.css';
+//import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/css/bootstrap.css';
+//import 'bootstrap/dist/css/bootstrap.css';
 import QuestionChoice from "./QuestionC.js";
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 
@@ -24,6 +24,8 @@ function handleClick() {
 const[dat,setDta] = useState([])
 
 const[paper,setPaper] = useState("")
+
+const[company,setCompany] = useState("")
 const [instructions,setInstructions] = useState([]);
 
 const [questions,setQuestions] = useState([]);
@@ -38,14 +40,31 @@ const requestOptions = {
     };
     fetch('http://'+Domain+'/oneexam', requestOptions)
         .then(res =>res.json())
-        .then(data => {setDta(data);setInstructions(data.Instructions);setPaper(data.paper_name)
+        .then(data => {setDta(data);setInstructions(data.Instructions);setPaper(data.paper_name);setCompany(data.company_id)
 })
 
 
 
 }, []);
-//console.log(dat,"dta check")
+console.log(company,"company check")
+{if(company==1){
 
+
+require('./swarabharathi.css');
+}
+}
+{(()=> {
+          if (company==1) {
+
+require('./swarabharathi.css');
+          } else if (company==2) {
+
+require('./tech_school.css');
+          } else{
+
+require('./App.css');
+          }
+        })()}
 //
 //useEffect(() =>{
 //axios.get('http://localhost:8000/sec_instructions')

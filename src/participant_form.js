@@ -3,7 +3,7 @@ import { Button,Row,Form,Col } from 'react-bootstrap';
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/css/bootstrap.css';
+import './bootstrap.css';
 import {BrowserRouter as Router,Switch,Route,useHistory,Link,useLocation} from 'react-router-dom';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import axios from "axios";

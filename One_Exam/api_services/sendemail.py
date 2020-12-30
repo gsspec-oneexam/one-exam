@@ -126,6 +126,7 @@ def sendEmail():
 # sendEmail()
 
 
+
 def sendEmail_to_participant(participant_id):
     try:
         CRLF = "\r\n"
@@ -143,7 +144,6 @@ def sendEmail_to_participant(participant_id):
             message["To"] = receiver_email
             exam_code = ''.join(random.choices(string.ascii_letters + string.digits, k=email_config.getint('code_length')))
             paper = Paper.objects.get(paper_id=participant.paper_id)
-
             emailbody = MIMEText(email_template.email_body
                                  .replace("{name}", participant.first_name)
                                  .replace("{paper}", paper.paper_name)

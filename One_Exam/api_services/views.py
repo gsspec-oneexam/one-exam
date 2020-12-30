@@ -1,14 +1,16 @@
 import datetime
 import json
 from itertools import count
+
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
-from api_services.models import Question, Paper_section, Participant, Paper_Instance, Option, Media, Paper, Paper_Question, \
-    Paper_answer, Calender
-from api_services.sendemail import sendEmail, sendEmail_to_participant
+from One_Exam.api_services.models import Question, Paper_section, Participant, Paper_Instance, Option, Media, Paper, Paper_Question, \
+    Paper_answer, Calender, Company
+from One_Exam.api_services.sendemail import sendEmail, sendEmail_to_participant
+
 
 def questionsView(request):
     try:
@@ -90,6 +92,7 @@ def oneExamView(request):
             'Instructions':None,
             'questions':None,
             'section':None,
+            'company_id':None,
             'error': None,
             'statusCode': 1
         }
@@ -171,6 +174,7 @@ def oneExamView(request):
                 response['paper_name'] = paper.paper_name
                 response['Instructions'] = instrctions_obj
                 response['section'] = section
+                response['company_id'] = paper.company_id
                 response['paper_instance_id'] = participant_details.id
                 return JsonResponse(response)
             else:
@@ -322,6 +326,7 @@ def oneExamView(request):
                 response['paper_instance_id'] = participant_details.id
                 response['Instructions'] = instrctions_obj
                 response['section'] = section
+                response['company_id'] = paper.company_id
                 participant_key = ""
                 return JsonResponse(response)
         if request.method == "GET":
@@ -406,7 +411,10 @@ def examinar_dashboard(request):
         'statusCode': 1
     }
     try:
-        papers = Paper.objects.all()
+        companies_list=[]
+        companies = Company.objects.filter(company_status='A')
+        for company in companies:companies_list.append(company.id)
+        papers = Paper.objects.filter(company_id__in=companies_list)
         students = Participant.objects.all()
         papers_obj =[]
         for paper in papers:
@@ -435,10 +443,11 @@ def participant_form(request):
         }
         if request.method == "POST":
             data = json.loads(request.body)
+            paper_detatils = Paper.objects.get(paper_id=data['paper_id'])
             Participant(first_name = data['first_name'],
                         last_name = data['last_name'],
                         registration_date = datetime.datetime.now(),
-                        company_id = 1,
+                        company_id = paper_detatils.company_id,
                         paper_id = data['paper_id'],
                         participant_email = data['email'],
                         participant_phone = data['mobile_no'],

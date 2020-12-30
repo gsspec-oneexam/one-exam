@@ -2,7 +2,7 @@ import React , { useEffect , useState ,useContext} from 'react';
 import { Button } from 'react-bootstrap';
 import {BrowserRouter as Router,Switch,Route,Link,useHistory,useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/css/bootstrap.css';
+import './bootstrap.css';
 
 import Instructions from "./instructions.js";
 

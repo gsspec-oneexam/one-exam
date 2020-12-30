@@ -4,13 +4,19 @@ import {BrowserRouter as Router,Switch,Route,Link,useHistory,useLocation } from 
 import axios from 'axios';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/css/bootstrap.css';
+import './bootstrap.css';
 import QuestionChoice from "./QuestionC.js";
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import { RadioGroup, RadioButton,ReversedRadioButton } from 'react-radio-buttons';
 import {domain} from "./config.js";
 
 function Paper_selection() {
+{if(1==1){
+
+
+//require('./test.css');
+}
+}
 window.onbeforeunload = function() {
     return "Refresh not allowed";
 }
@@ -33,7 +39,7 @@ setPaper(res.data.papers)
 
 },[]);
 
-console.log(selected_paper,"selected_paper");
+console.log(selected_paper.paper_id,"selected_paper");
   return (
 
 
@@ -65,7 +71,7 @@ console.log(selected_paper,"selected_paper");
 	</table>
 </div>
 {(()=> {
-          if (selected_paper) {
+          if (selected_paper.paper_id) {
           return (
 <button className="btn btn-custom  mt-3" > <Link className = "cstyle" to ={{ pathname: "/participant_form", paper: selected_paper}} >
 Proceed</Link></button>

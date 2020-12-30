@@ -3,11 +3,11 @@ import { Button } from 'react-bootstrap';
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/css/bootstrap.css';
+//import 'bootstrap/dist/css/bootstrap.css';
 import AudioRecorder from 'react-audio-recorder';
 import ado from './Reeti.mp3';
 import {BrowserRouter as Router,Switch,Route,Link} from 'react-router-dom';
-import VoiceRecorder from "./recorder.js"
+//import VoiceRecorder from "./recorder.js"
 import axios from "axios";
 
 import qpic from './kittu_123456.jpg';
@@ -17,6 +17,7 @@ import {domain} from "./config.js";
 
 import xtype from 'xtypejs';
 function Questions(props) {
+
 console.log(useContext(domain));
 console.log(props.qlist.questions,"props.count");
 const [questions,setQuestions] = useState([]);
@@ -126,7 +127,6 @@ return(<>
 
 	<h1>{props.count + 1}) {questions.q_name}</h1>
 	     <br/><br/>
-	     <VoiceRecorder />
 		 <input className="Inputfield3"/>
 </>
 )
