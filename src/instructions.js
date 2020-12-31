@@ -57,9 +57,13 @@ require('./swarabharathi.css');
           if (company==1) {
 
 require('./swarabharathi.css');
+
+require('./swarabharathi_bootstrap.css');
           } else if (company==2) {
 
 require('./tech_school.css');
+
+require('./tech_school_bootstrap.css');
           } else{
 
 require('./App.css');

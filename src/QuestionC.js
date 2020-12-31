@@ -26,8 +26,22 @@ window.onbeforeunload = function() {
 const Domain = useContext(domain)
 const [answer, setAnswer] = useState()
 const { state } = useLocation();
-//console.log(state,"staet check")
+{(()=> {
+          if (state.dat.company_id==1) {
 
+require('./swarabharathi.css');
+
+require('./swarabharathi_bootstrap.css');
+          } else if (state.dat.company_id==2) {
+
+require('./tech_school.css');
+
+require('./tech_school_bootstrap.css');
+          } else{
+
+require('./App.css');
+          }
+        })()}
 //
 //    console.log(state.dat.Instructions,"sout taet");
 //const testing = useContext(context);
