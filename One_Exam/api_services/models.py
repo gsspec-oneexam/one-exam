@@ -174,6 +174,7 @@ desc: To store Option details.
 class Paper(models.Model):
     id = models.AutoField(primary_key=True)
     paper_id = models.IntegerField(null=True, blank=True)
+    company_id = models.IntegerField(null=True, blank=True)
     paper_name = models.CharField(max_length=100, null=True)
     paper_marks = models.IntegerField()
     paper_instructions = models.CharField(max_length=256, null=True)
