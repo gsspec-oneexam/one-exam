@@ -1,5 +1,6 @@
 import datetime
 import json
+import logging
 from itertools import count
 
 from django.db.models import Q
@@ -7,18 +8,22 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
-from One_Exam.api_services.models import Question, Paper_section, Participant, Paper_Instance, Option, Media, Paper, Paper_Question, \
+
+from api_services.metadata import configureLogging
+from api_services.models import Question, Paper_section, Participant, Paper_Instance, Option, Media, Paper, Paper_Question, \
     Paper_answer, Calender, Company
-from One_Exam.api_services.sendemail import sendEmail, sendEmail_to_participant
+from api_services.sendemail import sendEmail, sendEmail_to_participant
 
 
 def questionsView(request):
+    response = {
+        'data': None,
+        'error': None,
+        'statusCode': 1
+    }
     try:
-        response = {
-            'data': None,
-            'error': None,
-            'statusCode': 1
-        }
+
+        configureLogging()
         if request.method == "GET":
             # paper_id = 1
             question_details = Paper_Question.objects.all().order_by('question_order')
@@ -80,22 +85,26 @@ def questionsView(request):
             response['statusCode'] = 0
             return JsonResponse(response)
     except Exception as e:
-        print(e)
+        logging.error(str(e))
+        response['data'] = 'Error in retrieving questions'
+        response['error'] = str(e)
 
 @csrf_exempt
 def oneExamView(request):
+    response = {
+        'participant': None,
+        'paper_name': None,
+        'paper_instance_id': None,
+        'Instructions': None,
+        'questions': None,
+        'section': None,
+        'company_id': None,
+        'error': None,
+        'statusCode': 1
+    }
     try:
-        response = {
-            'participant':None,
-            'paper_name':None,
-            'paper_instance_id':None,
-            'Instructions':None,
-            'questions':None,
-            'section':None,
-            'company_id':None,
-            'error': None,
-            'statusCode': 1
-        }
+
+        configureLogging()
         if request.method == "POST":
             global participant_key, instrctions_obj
             data = json.loads(request.body)
@@ -344,17 +353,19 @@ def oneExamView(request):
             response['statusCode'] = 0
             return JsonResponse(response)
     except Exception as e:
-        print(e)
+        logging.error(str(e))
+        response['error'] = 'Error in retrieving Exam paper details' +str(e)
 
 
 @csrf_exempt
 def exam_answers(request):
+    response = {
+        'data': None,
+        'error': None,
+        'statusCode': 1
+    }
     try:
-        response = {
-            'data':None,
-            'error': None,
-            'statusCode': 1
-        }
+        configureLogging()
         if request.method == "POST":
             data = json.loads(request.body)
             paper_details = Paper.objects.get(paper_name=data['paper_name'])
@@ -374,15 +385,19 @@ def exam_answers(request):
             paper_answer.save()
             return JsonResponse(response)
     except Exception as e:
-        print(e)
+        logging.error(str(e))
+        response['data'] = 'Error in saving paper answers'
+        response['error'] =str(e)
+        return JsonResponse(response)
 
 def exam_code_verification_view(request):
+    response = {
+        'data': None,
+        'error': None,
+        'statusCode': 1
+    }
     try:
-        response = {
-            'data': None,
-            'error': None,
-            'statusCode': 1
-        }
+        configureLogging()
         if request.method == "GET":
             exam_codes = Paper_Instance.objects.filter(participant_key__isnull=False)
             exam_code_obj = []
@@ -398,7 +413,7 @@ def exam_code_verification_view(request):
             response['statusCode'] = 0
             return JsonResponse(response)
     except Exception as e:
-        print(e)
+        logging.error(str(e))
 
 
 @csrf_exempt
@@ -411,6 +426,7 @@ def examinar_dashboard(request):
         'statusCode': 1
     }
     try:
+        configureLogging()
         companies_list=[]
         companies = Company.objects.filter(company_status='A')
         for company in companies:companies_list.append(company.id)
@@ -418,11 +434,14 @@ def examinar_dashboard(request):
         students = Participant.objects.all()
         papers_obj =[]
         for paper in papers:
-            temp={
-                'paper_id':paper.paper_id,
-                'paper_name':paper.paper_name,
-            }
-            papers_obj.append(temp)
+            calender_details = Calender.objects.filter(paper_id=paper.paper_id)
+            for calender_detail in calender_details:
+                if calender_detail.schedule_time > datetime.datetime.now():
+                    temp={
+                        'paper_id':paper.paper_id,
+                        'paper_name':paper.paper_name,
+                    }
+                    papers_obj.append(temp)
         response['total_papers'] = len(papers)
         response['papers'] = papers_obj
         response['participants'] = len(students)
@@ -430,17 +449,18 @@ def examinar_dashboard(request):
         return JsonResponse(response)
 
     except Exception as e:
-        print(e)
+        logging.error(str(e))
 
 
 @csrf_exempt
 def participant_form(request):
+    response = {
+        'data': None,
+        'error': None,
+        'statusCode': 1
+    }
     try:
-        response = {
-            'data':None,
-            'error': None,
-            'statusCode': 1
-        }
+        configureLogging()
         if request.method == "POST":
             data = json.loads(request.body)
             paper_detatils = Paper.objects.get(paper_id=data['paper_id'])
@@ -461,4 +481,4 @@ def participant_form(request):
             sendEmail_to_participant(Participant.objects.latest('id').id)
             return JsonResponse(response)
     except Exception as e:
-        print(e)
+        logging.error(str(e))

@@ -1,0 +1,8 @@
+01/01/2021 10:08:23 AM-ERROR-metadata-configureLogging-20-teste 1
+01/01/2021 10:08:23 AM-ERROR-metadata-configureLogging-20-teste 1
+01/01/2021 10:08:23 AM-ERROR-sendemail-sendEmail-178-module 'datetime' has no attribute 'datetim'
+01/01/2021 10:09:18 AM-ERROR-metadata-configureLogging-19-teste 1
+01/01/2021 10:09:18 AM-ERROR-sendemail-sendEmail-178-module 'datetime' has no attribute 'datetim'
+01/01/2021 10:11:47 AM-ERROR-sendemail-sendEmail-177-module 'datetime' has no attribute 'datetim'
+01/01/2021 10:16:58 AM-INFO-sendemail-sendEmail-177-type object 'Paper_Instance' has no attribute 'objecs'
+01/01/2021 10:17:31 AM-DEBUG-sendemail-sendEmail-177-type object 'Paper_Instance' has no attribute 'objecs'
