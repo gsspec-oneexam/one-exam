@@ -1,6 +1,7 @@
 Technical stack that must be installed in local machine:
 	1.Python 3.6.5 install via https://www.python.org/downloads/
 	2.NodeJS v12.19.0 install via https://nodejs.org/en/download/
+	3.Mysql 8.0.19
 
 ***
 
