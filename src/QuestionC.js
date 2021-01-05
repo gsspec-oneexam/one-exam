@@ -1,4 +1,4 @@
-import React , { useEffect , useState,useContext} from 'react';
+import React , { useEffect ,useRef, useState,useContext} from 'react';
 import { Button } from 'react-bootstrap';
 import logo from './logo.svg';
 import './App.css';
@@ -213,6 +213,32 @@ setQuestions(state.dat.questions[count])
 //
 //})
 });
+const given_a = useRef(null)
+useEffect(() =>{
+for (const [i, given_ans] of state.dat.given_answers.entries()) {
+    console.log(questions.q_id,"test quest id");
+    {
+          if (questions.q_id==given_ans.quest_id) {
+
+setAnswer(given_ans.quest_given_ans);
+if(questions.q_type == "P" || questions.q_type == "I"){
+given_a.current.value=given_ans.quest_given_ans;
+given_a.current.focus();
+setAnswer(given_ans.quest_given_ans);
+}
+          }
+          }
+  }
+  },[questions.q_id]);
+//  state.dat.given_answers.forEach((given_ans) => {
+//    {
+//          if (questions.q_id==given_ans.quest_id) {
+//
+//console.log(given_ans.quest_given_ans,"quest_given_ans")
+//setAnswer(given_ans.quest_given_ans)
+//          }
+//          }
+//  })
 
   {if(count   != quest_length){
   return (
@@ -305,7 +331,7 @@ setQuestions(state.dat.questions[count])
 <ElseIf condition={questions.q_type == "I"}>
 <>
 <h2 className="mt-3 ml-4 text-left">{count + 1}) {questions.q_name}</h2><br/><br/>
-	<input onChange={event => setAnswer(event.target.value)} className="Inputfield"/>
+	<input onChange={event => setAnswer(event.target.value)} ref={given_a} className="Inputfield" ref={given_a}/>
 </>
 </ElseIf>
 
@@ -326,7 +352,7 @@ setQuestions(state.dat.questions[count])
             <>
 <h2 className="mt-3 ml-4 text-left">{count +1}) {questions.q_name}</h2>
 <img src={questions.media_url} alt="image_display_error" className="text-left" width="300" height="150" /><br/><br/>
-	<input onChange={event => setAnswer(event.target.value)} className="Inputfield1"/>
+	<input onChange={event => setAnswer(event.target.value)} className="Inputfield1" ref={given_a}/>
 </>
             )
           }

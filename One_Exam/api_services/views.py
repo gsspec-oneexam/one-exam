@@ -2,7 +2,7 @@ import datetime
 import json
 import logging
 from itertools import count
-
+from random import choice
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -29,12 +29,12 @@ def questionsView(request):
             question_details = Paper_Question.objects.all().order_by('question_order')
             questions_obj = []
             for question_detail in question_details:
-                question_db = Question.objects.filter(question_status='A',id=question_detail.question_id)
+                question_db = Question.objects.filter(question_status='A', id=question_detail.question_id)
                 for question in question_db:
                     if question.question_type == 'C':
                         options = Option.objects.filter(question_id=question.id).order_by('option_order')
                         temp = {
-                            "q_id":question.id,
+                            "q_id": question.id,
                             "q_name": question.question,
                             "q_type": question.question_type,
                             "opt1": options[0].option_name,
@@ -47,39 +47,37 @@ def questionsView(request):
                         questions_obj.append(temp)
                     if question.question_type == 'I':
                         temp = {
-                                "q_id": question.id,
-                                "q_name": question.question,
-                                "q_type": question.question_type,
-                            }
+                            "q_id": question.id,
+                            "q_name": question.question,
+                            "q_type": question.question_type,
+                        }
                         questions_obj.append(temp)
                     if question.question_type == 'P':
-
                         media = Media.objects.get(id=question.question_image)
                         temp = {
-                                "q_id": question.id,
-                                "q_name": question.question,
-                                "q_type": question.question_type,
-                                "mediasource":media.mediasource,
-                                "media_url":media.media_url
-                            }
+                            "q_id": question.id,
+                            "q_name": question.question,
+                            "q_type": question.question_type,
+                            "mediasource": media.mediasource,
+                            "media_url": media.media_url
+                        }
                         questions_obj.append(temp)
                     if question.question_type == 'A':
-
                         media = Media.objects.get(id=question.question_audio)
                         temp = {
-                                "q_id": question.id,
-                                "q_name": question.question,
-                                "q_type": question.question_type,
-                                "mediasource":media.mediasource,
-                                "media_url":media.media_url
-                            }
+                            "q_id": question.id,
+                            "q_name": question.question,
+                            "q_type": question.question_type,
+                            "mediasource": media.mediasource,
+                            "media_url": media.media_url
+                        }
                         questions_obj.append(temp)
                     if question.question_type == 'R':
                         temp = {
-                                "q_id":question.id,
-                                "q_name": question.question,
-                                "q_type": question.question_type,
-                            }
+                            "q_id": question.id,
+                            "q_name": question.question,
+                            "q_type": question.question_type,
+                        }
                         questions_obj.append(temp)
             response['data'] = questions_obj
             response['statusCode'] = 0
@@ -88,6 +86,7 @@ def questionsView(request):
         logging.error(str(e))
         response['data'] = 'Error in retrieving questions'
         response['error'] = str(e)
+
 
 @csrf_exempt
 def oneExamView(request):
@@ -99,6 +98,7 @@ def oneExamView(request):
         'questions': None,
         'section': None,
         'company_id': None,
+        'given_answers':None,
         'error': None,
         'statusCode': 1
     }
@@ -113,19 +113,20 @@ def oneExamView(request):
                 section = []
                 participant_key = data['participant_key']
                 response['data'] = [{"response": data['participant_key']}]
-                participant_details = Paper_Instance.objects.get(participant_key = participant_key)
+                participant_details = Paper_Instance.objects.get(participant_key=participant_key)
                 paper_id = participant_details.paper_id
                 participant_id = participant_details.participant_id
-                paper = Paper.objects.get(paper_id = paper_id)
+                paper = Paper.objects.get(paper_id=paper_id)
                 question_details = Paper_Question.objects.filter(paper_id=paper_id).order_by('question_order')
                 questions_obj = []
                 for question_detail in question_details:
+
                     question_db = Question.objects.filter(question_status='A', id=question_detail.question_id)
                     for question in question_db:
                         if question.question_type == 'C':
                             options = Option.objects.filter(question_id=question.id).order_by('option_order')
                             temp = {
-                                "q_id":question.id,
+                                "q_id": question.id,
                                 "q_name": question.question,
                                 "q_type": question.question_type,
                                 "opt1": options[0].option_name,
@@ -133,48 +134,48 @@ def oneExamView(request):
                                 "opt3": options[2].option_name,
                                 "opt4": options[3].option_name,
                                 "opt5": options[4].option_name,
-                                "q_time":question_detail.question_time
+                                "q_time": question_detail.question_time
                             }
 
                             questions_obj.append(temp)
                         if question.question_type == 'I':
                             temp = {
-                                "q_id":question.id,
+                                "q_id": question.id,
                                 "q_name": question.question,
                                 "q_type": question.question_type,
-                                "q_time":question_detail.question_time
+                                "q_time": question_detail.question_time
                             }
                             questions_obj.append(temp)
                         if question.question_type == 'P':
                             media = Media.objects.get(id=question.question_image)
                             temp = {
-                                "q_id":question.id,
+                                "q_id": question.id,
                                 "q_name": question.question,
                                 "q_type": question.question_type,
                                 "mediasource": media.mediasource,
                                 "media_url": media.media_url,
-                                "q_time":question_detail.question_time
+                                "q_time": question_detail.question_time
                             }
                             questions_obj.append(temp)
                         if question.question_type == 'A':
                             media = Media.objects.get(id=question.question_audio)
                             temp = {
-                                "q_id":question.id,
+                                "q_id": question.id,
                                 "q_name": question.question,
                                 "q_type": question.question_type,
                                 "mediasource": media.mediasource,
                                 "media_url": media.media_url,
-                                "q_time":question_detail.question_time
+                                "q_time": question_detail.question_time
                             }
                             questions_obj.append(temp)
                         if question.question_type == 'R':
                             temp = {
                                 "q_name": question.question,
                                 "q_type": question.question_type,
-                                "q_time":question_detail.question_time
+                                "q_time": question_detail.question_time
                             }
                             questions_obj.append(temp)
-                paper_sections = Paper_section.objects.filter(section_paper_id = paper_id)
+                paper_sections = Paper_section.objects.filter(section_paper_id=paper_id)
                 for instruction in paper_sections:
                     instrctions_obj = instruction.section_instructions.split("||")
                     section.append(instruction.section_name)
@@ -191,142 +192,150 @@ def oneExamView(request):
                 participant_details = Paper_Instance.objects.get(participant_key=participant_key)
                 paper_id = participant_details.paper_id
                 participant_id = participant_details.participant_id
-                q=[]
+                q = []
                 paper_answers = Paper_answer.objects.filter(answer_participant_id=participant_id,
                                                             answer_paper_instance_id=participant_details.id)
-                answered=[]
+                answered = []
+                answers=[]
                 for paper_answer in paper_answers:
                     answered.append(paper_answer.answer_question_id)
+                    answers.append({
+
+                        "quest_id":paper_answer.answer_question_id,
+                        "quest_given_ans":paper_answer.answer_question_response
+
+                    })
 
                     question_detai = Paper_Question.objects.filter(Q(paper_id=paper_id)).order_by('question_order')
 
                     q = list(question_detai)
 
-                ques = Paper_Question.objects.filter(Q(paper_id=paper_id),~Q(question_id__in=answered))
+                ques = Paper_Question.objects.filter(Q(paper_id=paper_id))
 
                 questions_obj = []
-                paper_answers = Paper_answer.objects.filter(answer_participant_id= participant_id,
+                paper_answers = Paper_answer.objects.filter(answer_participant_id=participant_id,
                                                             answer_paper_instance_id=participant_details.id)
                 if paper_answers:
-                        for question_detail in ques:
-                            question_db = Question.objects.filter(question_status='A', id=question_detail.question_id)
+                    for question_detail in ques:
+                        question_db = Question.objects.filter(question_status='A', id=question_detail.question_id)
 
-                            for question in question_db:
+                        for question in question_db:
 
-                                        if question.question_type == 'C':
-                                            options = Option.objects.filter(question_id=question.id).order_by('option_order')
-                                            temp = {
-                                                "q_id":question.id,
-                                                "q_name": question.question,
-                                                "q_type": question.question_type,
-                                                "opt1": options[0].option_name,
-                                                "opt2": options[1].option_name,
-                                                "opt3": options[2].option_name,
-                                                "opt4": options[3].option_name,
-                                                "opt5": options[4].option_name,
-                                                "q_time":question_detail.question_time
-                                            }
+                            if question.question_type == 'C':
+                                options = Option.objects.filter(question_id=question.id).order_by('option_order')
+                                temp = {
+                                    "q_id": question.id,
+                                    "q_name": question.question,
+                                    "q_type": question.question_type,
+                                    "opt1": options[0].option_name,
+                                    "opt2": options[1].option_name,
+                                    "opt3": options[2].option_name,
+                                    "opt4": options[3].option_name,
+                                    "opt5": options[4].option_name,
+                                    "q_time": question_detail.question_time
+                                }
 
-                                            questions_obj.append(temp)
-                                        if question.question_type == 'I':
-                                            temp = {
-                                                "q_id":question.id,
-                                                "q_name": question.question,
-                                                "q_type": question.question_type,
-                                                "q_time":question_detail.question_time
-                                            }
-                                            questions_obj.append(temp)
-                                        if question.question_type == 'P':
-                                            media = Media.objects.get(id=question.question_image)
-                                            temp = {
-                                                "q_id":question.id,
-                                                "q_name": question.question,
-                                                "q_type": question.question_type,
-                                                "mediasource": media.mediasource,
-                                                "media_url": media.media_url,
-                                                "q_time":question_detail.question_time
-                                            }
-                                            questions_obj.append(temp)
-                                        if question.question_type == 'A':
-                                            media = Media.objects.get(id=question.question_audio)
-                                            temp = {
-                                                "q_id":question.id,
-                                                "q_name": question.question,
-                                                "q_type": question.question_type,
-                                                "mediasource": media.mediasource,
-                                                "media_url": media.media_url,
-                                                "q_time":question_detail.question_time
-                                            }
-                                            questions_obj.append(temp)
-                                        if question.question_type == 'R':
-                                            temp = {
-                                                "q_id":question.id,
-                                                "q_name": question.question,
-                                                "q_type": question.question_type,
-                                                "q_time":question_detail.question_time
-                                            }
-                                            questions_obj.append(temp)
+                                questions_obj.append(temp)
+                            if question.question_type == 'I':
+                                temp = {
+                                    "q_id": question.id,
+                                    "q_name": question.question,
+                                    "q_type": question.question_type,
+                                    "q_time": question_detail.question_time
+                                }
+                                questions_obj.append(temp)
+                            if question.question_type == 'P':
+                                media = Media.objects.get(id=question.question_image)
+                                temp = {
+                                    "q_id": question.id,
+                                    "q_name": question.question,
+                                    "q_type": question.question_type,
+                                    "mediasource": media.mediasource,
+                                    "media_url": media.media_url,
+                                    "q_time": question_detail.question_time
+                                }
+                                questions_obj.append(temp)
+                            if question.question_type == 'A':
+                                media = Media.objects.get(id=question.question_audio)
+                                temp = {
+                                    "q_id": question.id,
+                                    "q_name": question.question,
+                                    "q_type": question.question_type,
+                                    "mediasource": media.mediasource,
+                                    "media_url": media.media_url,
+                                    "q_time": question_detail.question_time
+                                }
+                                questions_obj.append(temp)
+                            if question.question_type == 'R':
+                                temp = {
+                                    "q_id": question.id,
+                                    "q_name": question.question,
+                                    "q_type": question.question_type,
+                                    "q_time": question_detail.question_time
+                                }
+                                questions_obj.append(temp)
                 else:
                     for question_detail in ques:
                         question_db = Question.objects.filter(question_status='A', id=question_detail.question_id)
+                        # question_db = Question.objects.filter(question_status='A', id=question_detail.question_id)
                         for question in question_db:
-                                if question.question_type == 'C':
-                                    options = Option.objects.filter(question_id=question.id).order_by('option_order')
-                                    temp = {
-                                        "q_id": question.id,
-                                        "q_name": question.question,
-                                        "q_type": question.question_type,
-                                        "opt1": options[0].option_name,
-                                        "opt2": options[1].option_name,
-                                        "opt3": options[2].option_name,
-                                        "opt4": options[3].option_name,
-                                        "opt5": options[4].option_name,
-                                        "q_time": question_detail.question_time
-                                    }
+                            if question.question_type == 'C':
+                                options = Option.objects.filter(question_id=question.id).order_by('option_order')
+                                temp = {
+                                    "q_id": question.id,
+                                    "q_name": question.question,
+                                    "q_type": question.question_type,
+                                    "opt1": options[0].option_name,
+                                    "opt2": options[1].option_name,
+                                    "opt3": options[2].option_name,
+                                    "opt4": options[3].option_name,
+                                    "opt5": options[4].option_name,
+                                    "q_time": question_detail.question_time
+                                }
 
-                                    questions_obj.append(temp)
-                                if question.question_type == 'I':
-                                    temp = {
-                                        "q_id": question.id,
-                                        "q_name": question.question,
-                                        "q_type": question.question_type,
-                                        "q_time": question_detail.question_time
-                                    }
-                                    questions_obj.append(temp)
-                                if question.question_type == 'P':
-                                    media = Media.objects.get(id=question.question_image)
-                                    temp = {
-                                        "q_id": question.id,
-                                        "q_name": question.question,
-                                        "q_type": question.question_type,
-                                        "mediasource": media.mediasource,
-                                        "media_url": media.media_url,
-                                        "q_time": question_detail.question_time
-                                    }
-                                    questions_obj.append(temp)
-                                if question.question_type == 'A':
-                                    media = Media.objects.get(id=question.question_audio)
-                                    temp = {
-                                        "q_id": question.id,
-                                        "q_name": question.question,
-                                        "q_type": question.question_type,
-                                        "mediasource": media.mediasource,
-                                        "media_url": media.media_url,
-                                        "q_time": question_detail.question_time
-                                    }
-                                    questions_obj.append(temp)
-                                if question.question_type == 'R':
-                                    temp = {
-                                        "q_id": question.id,
-                                        "q_name": question.question,
-                                        "q_type": question.question_type,
-                                        "q_time": question_detail.question_time
-                                    }
-                                    questions_obj.append(temp)
+                                questions_obj.append(temp)
+                            if question.question_type == 'I':
+                                temp = {
+                                    "q_id": question.id,
+                                    "q_name": question.question,
+                                    "q_type": question.question_type,
+                                    "q_time": question_detail.question_time
+                                }
+                                questions_obj.append(temp)
+                            if question.question_type == 'P':
+                                media = Media.objects.get(id=question.question_image)
+                                temp = {
+                                    "q_id": question.id,
+                                    "q_name": question.question,
+                                    "q_type": question.question_type,
+                                    "mediasource": media.mediasource,
+                                    "media_url": media.media_url,
+                                    "q_time": question_detail.question_time
+                                }
+                                questions_obj.append(temp)
+                            if question.question_type == 'A':
+                                media = Media.objects.get(id=question.question_audio)
+                                temp = {
+                                    "q_id": question.id,
+                                    "q_name": question.question,
+                                    "q_type": question.question_type,
+                                    "mediasource": media.mediasource,
+                                    "media_url": media.media_url,
+                                    "q_time": question_detail.question_time
+                                }
+                                questions_obj.append(temp)
+                            if question.question_type == 'R':
+                                temp = {
+                                    "q_id": question.id,
+                                    "q_name": question.question,
+                                    "q_type": question.question_type,
+                                    "q_time": question_detail.question_time
+                                }
+                                questions_obj.append(temp)
                 response['questions'] = questions_obj
                 participant_id = participant_details.participant_id
                 paper = Paper.objects.get(paper_id=paper_id)
-                paper_sections = Paper_section.objects.filter(section_paper_id = paper_id)
+                paper_sections = Paper_section.objects.filter(section_paper_id=paper_id)
                 for instruction in paper_sections:
                     instrctions_obj = instruction.section_instructions.split("||")
                     section.append(instruction.section_name)
@@ -336,7 +345,9 @@ def oneExamView(request):
                 response['Instructions'] = instrctions_obj
                 response['section'] = section
                 response['company_id'] = paper.company_id
+                response['given_answers'] = answers
                 participant_key = ""
+                print(response,"respones")
                 return JsonResponse(response)
         if request.method == "GET":
             instrc_db = Paper_section.objects.all()
@@ -353,8 +364,10 @@ def oneExamView(request):
             response['statusCode'] = 0
             return JsonResponse(response)
     except Exception as e:
-        logging.error(str(e))
-        response['error'] = 'Error in retrieving Exam paper details' +str(e)
+        logging.error('Error in retrieving Exam paper details: ' + str(e))
+        response['error'] = 'Error in retrieving Exam paper details' + str(e)
+        return JsonResponse(response)
+
 
 
 @csrf_exempt
@@ -370,11 +383,11 @@ def exam_answers(request):
             data = json.loads(request.body)
             paper_details = Paper.objects.get(paper_name=data['paper_name'])
             paper_answer, paper_answer_stat = Paper_answer.objects.get_or_create(
-                                                        answer_paper_instance_id=data['paper_instance_id'],
-                                                        answer_paper_id=paper_details.paper_id,
-                                                        answer_participant_id=data['participant_id'],
-                                                        answer_question_id=data['question_id']
-                                                        )
+                answer_paper_instance_id=data['paper_instance_id'],
+                answer_paper_id=paper_details.paper_id,
+                answer_participant_id=data['participant_id'],
+                answer_question_id=data['question_id']
+            )
             paper_answer.answer_subject_id = paper_details.paper_subject
             if 'ans' in data:
                 paper_answer.answer_question_response = data['ans']
@@ -387,8 +400,9 @@ def exam_answers(request):
     except Exception as e:
         logging.error(str(e))
         response['data'] = 'Error in saving paper answers'
-        response['error'] =str(e)
+        response['error'] = str(e)
         return JsonResponse(response)
+
 
 def exam_code_verification_view(request):
     response = {
@@ -421,25 +435,25 @@ def examinar_dashboard(request):
     response = {
         'participants': None,
         'total_papers': None,
-        'papers':None,
+        'papers': None,
         'error': None,
         'statusCode': 1
     }
     try:
         configureLogging()
-        companies_list=[]
+        companies_list = []
         companies = Company.objects.filter(company_status='A')
-        for company in companies:companies_list.append(company.id)
+        for company in companies: companies_list.append(company.id)
         papers = Paper.objects.filter(company_id__in=companies_list)
         students = Participant.objects.all()
-        papers_obj =[]
+        papers_obj = []
         for paper in papers:
             calender_details = Calender.objects.filter(paper_id=paper.paper_id)
             for calender_detail in calender_details:
                 if calender_detail.schedule_time > datetime.datetime.now():
-                    temp={
-                        'paper_id':paper.paper_id,
-                        'paper_name':paper.paper_name,
+                    temp = {
+                        'paper_id': paper.paper_id,
+                        'paper_name': paper.paper_name,
                     }
                     papers_obj.append(temp)
         response['total_papers'] = len(papers)
@@ -464,19 +478,19 @@ def participant_form(request):
         if request.method == "POST":
             data = json.loads(request.body)
             paper_detatils = Paper.objects.get(paper_id=data['paper_id'])
-            Participant(first_name = data['first_name'],
-                        last_name = data['last_name'],
-                        registration_date = datetime.datetime.now(),
-                        company_id = paper_detatils.company_id,
-                        paper_id = data['paper_id'],
-                        participant_email = data['email'],
-                        participant_phone = data['mobile_no'],
-                        participant_city = data['City'],
-                        participant_state = data['state'],
+            Participant(first_name=data['first_name'],
+                        last_name=data['last_name'],
+                        registration_date=datetime.datetime.now(),
+                        company_id=paper_detatils.company_id,
+                        paper_id=data['paper_id'],
+                        participant_email=data['email'],
+                        participant_phone=data['mobile_no'],
+                        participant_city=data['City'],
+                        participant_state=data['state'],
                         participant_country=data['country']).save()
             response['statusCode'] = 2
             calender = Calender.objects.get(paper_id=data['paper_id'])
-            Paper_Instance(paper_id=data['paper_id'],participant_id=Participant.objects.latest('id').id,
+            Paper_Instance(paper_id=data['paper_id'], participant_id=Participant.objects.latest('id').id,
                            calender_id=calender.id).save()
             sendEmail_to_participant(Participant.objects.latest('id').id)
             return JsonResponse(response)
