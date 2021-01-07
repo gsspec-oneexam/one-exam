@@ -1,7 +1,6 @@
 Technical stack that must be installed in local machine:
 	1.Python 3.6.5 install via https://www.python.org/downloads/
 	2.NodeJS v12.19.0 install via https://nodejs.org/en/download/
-	3.Mysql 8.0.19 install via https://www.mysql.com/downloads/
 
 ***
 
@@ -22,7 +21,11 @@ Front-end:
 	1.After cloning the project,install react node modules by running the command: 
 		>`npm install`
 	2.Delete bootstrap.css file located at /node_modules/bootstrap/dist/css/
+	3.Install react packages with command:
+		>`npm install react-hook-form`
+		>`npm install react-radio-buttons`
 	3.Run react server at package.json file level by command:
 		>`npm start`
 	4.In few minutes application window opens in local default browser.
+
 
