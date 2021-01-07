@@ -1,0 +1,9 @@
+django==3.0.2
+mysql-connector-python
+django-cors-headers
+djangorestframework
+django-filter
+docx-mailmerge
+docx2pdf
+num2words
+python-dateutil
