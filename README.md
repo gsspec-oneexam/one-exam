@@ -5,7 +5,7 @@ Technical stack that must be installed in local machine:
 ***
 
 Back-end:
-	- After cloning the project,install requirements at manage.py file level with command:
+	1.After cloning the project,install requirements at manage.py file level with command:
 		>`pip install -r requirements.txt`
 	2.Create database "oneexam" and configure your local mysql in settings.py file
 	3.Perform migrations at manage.py file level with the following commands:
